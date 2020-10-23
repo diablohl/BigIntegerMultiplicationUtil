@@ -286,9 +286,11 @@ public class BigIntegerMultiplicationUtil {
     public static void main(String[] args) {
         // TODO Auto-generated method stub
         long start = System.currentTimeMillis();
+
         InputInteger();
         int[] XY=BigIntegerMultiplication(X, Y);
         GetResult(XY);
+
         long end = System.currentTimeMillis();
         System.out.println();
         System.out.println("程序运行时间："+(end-start)+"ms");
