@@ -10,6 +10,7 @@ public class BigIntegerMultiplicationUtil {
     private static String StringY;
 
     private static int MaxLength;//乘积应该开辟的数组长度
+    private static int MaxLength1;//乘积应该开辟的数组长度
 
     public static void InputInteger(){
         Scanner sc=new Scanner(System.in);
@@ -27,6 +28,8 @@ public class BigIntegerMultiplicationUtil {
     }
 
 
+
+
     //将用户输入的字符串，转换为二进制数组binary
     private static void RawToBinary(String raw,int[] binary){
         for(int i = 0; i < raw.length(); i++){
@@ -35,8 +38,24 @@ public class BigIntegerMultiplicationUtil {
     }
 
 
+    //暴力乘法
+    public  static  int[] Violent(int[] x, int[] y){
+        MaxLength1=x.length+y.length-1;
+        int[] sum=new int[MaxLength1];
+        int[] temp=new int[MaxLength1];
+        for (int j=0;j<y.length;j--){
+            if (y[y.length-j]==1){
 
-    public static int[] BigIntegerMultiplication(int[] x, int[] y)
+            }
+        }
+
+
+
+
+    }
+
+
+    public static int[] BigIntMul(int[] x, int[] y)
     {
         //获取二进制数组的有效位数（比如00001的有效位数为1，其中，默认00000的有效位数为1）
         int xLength = GetEffctiveLength(x);
@@ -81,21 +100,21 @@ public class BigIntegerMultiplicationUtil {
         xy = ac*2^(n1 + n2) + bd + (a+b)(c+d) * 2^n1 - ac*2^n1 - bd*2^n1 + bc*(2^n2-2^n1)）*/
 
         //**递归求解过程，演算上面的表达式**//
-        int[] AC = BigIntegerMultiplication(A, C);
-        int[] BD = BigIntegerMultiplication(B, D);
-        int[] BC = BigIntegerMultiplication(B, C);
+        int[] AC = BigIntMul(A, C);
+        int[] BD = BigIntMul(B, D);
+        int[] BC = BigIntMul(B, C);
 
         int[] AaddB = BinaryAdd(A, B);
         int[] CaddD = BinaryAdd(C, D);
 
-        int[] AaddBCaddD = BigIntegerMultiplication(AaddB, CaddD);
+        int[] AaBCaD = BigIntMul(AaddB, CaddD);
 
         //处理奇数问题，这里我的A = 0000 0000 0000 0000 0010
         //事实上，此时的x = A * 2^n1[向上取整] + B，大家可以自己推演一下，结合前面部分的理论的那张图，就知道了。
         n1 = xLength % 2 == 1 ? xLength / 2 + 1 : xLength / 2;
         n2 = yLength % 2 == 1 ? yLength / 2 + 1 : yLength / 2;
         //一顿演算
-        int[] AddPart = BinaryAdd(BinaryAdd(BinaryAdd(MoveLeft(AC, (n1 + n2)), BD), MoveLeft(AaddBCaddD, n1)), MoveLeft(BC, n2));
+        int[] AddPart = BinaryAdd(BinaryAdd(BinaryAdd(MoveLeft(AC, (n1 + n2)), BD), MoveLeft(AaBCaD, n1)), MoveLeft(BC, n2));
         int[] XY = BinarySub(BinarySub(BinarySub(AddPart, MoveLeft(AC, n1)), MoveLeft(BD, n1)),MoveLeft(BC,n1));
 
         //返回结果
@@ -285,10 +304,11 @@ public class BigIntegerMultiplicationUtil {
 
     public static void main(String[] args) {
         // TODO Auto-generated method stub
+        // TODO Auto-generated method stub
         long start = System.currentTimeMillis();
 
         InputInteger();
-        int[] XY=BigIntegerMultiplication(X, Y);
+        int[] XY= BigIntMul(X, Y);
         GetResult(XY);
 
         long end = System.currentTimeMillis();
